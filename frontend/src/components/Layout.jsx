@@ -28,7 +28,7 @@ export default function Layout({ children }) {
       {/* Sidebar Navigation */}
       <aside className="sidebar">
         <div className="brand-section" style={{ cursor: 'pointer', padding: '0.5rem 0' }} onClick={() => navigate('/')}>
-          <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-main)', letterSpacing: '-0.5px' }}>Ethara.AI</span>
+          <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-main)', letterSpacing: '-0.5px' }}>Ethara.AI Inventory Management System </span>
         </div>
 
         <nav>
