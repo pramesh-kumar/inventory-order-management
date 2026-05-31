@@ -525,11 +525,13 @@
   .nav-menu {
     flex-direction: column;
     gap: 0.25rem;
+    align-items: center;
   }
-  
+
   .nav-item-btn {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+    font-size: 1.05rem;
+    justify-content: center;
   }
   
   .main-content {
