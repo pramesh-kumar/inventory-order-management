@@ -69,7 +69,7 @@ export default function Dashboard({ fetchSummary, summary, loadingSummary }) {
             <div className="panel-header" style={{ marginBottom: '1rem' }}>
               <h2 className="panel-title" style={{ color: 'var(--color-rose)' }}>
                 <AlertTriangle size={18} />
-                <span>Low stock products (&lt; 5)</span>
+                <span>Low stock products (<span style={{ fontSize: '0.8rem' }}>&lt; 5</span>)</span>
               </h2>
               {summary.low_stock_alerts && summary.low_stock_alerts.length > 0 && (
                 <span className="badge badge-danger">
@@ -80,6 +80,7 @@ export default function Dashboard({ fetchSummary, summary, loadingSummary }) {
 
             {(!summary.low_stock_alerts || summary.low_stock_alerts.length === 0) ? (
               <div style={{ padding: '2.5rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🛡️</div>
                 <p style={{ fontSize: '0.85rem' }}>All product inventory lines are currently optimal.</p>
               </div>
             ) : (
