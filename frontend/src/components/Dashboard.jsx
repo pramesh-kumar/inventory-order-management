@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Boxes, Users, ShoppingBag, IndianRupee, AlertTriangle, ArrowUpRight } from 'lucide-react'
+import { Boxes, Users, ShoppingBag, IndianRupee, AlertTriangle } from 'lucide-react'
 
-export default function Dashboard({ fetchSummary, summary, orders, loadingSummary }) {
+export default function Dashboard({ fetchSummary, summary, loadingSummary }) {
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -15,9 +15,6 @@ export default function Dashboard({ fetchSummary, summary, orders, loadingSummar
       currency: 'INR'
     }).format(value || 0)
   }
-
-  // Slice last 5 orders as recent orders
-  const recentOrders = orders.slice(0, 5)
 
   return (
     <div>
@@ -67,97 +64,41 @@ export default function Dashboard({ fetchSummary, summary, orders, loadingSummar
             </div>
           </div>
 
-          <div className="dashboard-grid">
-            {/* Recent Orders Ledger */}
-            <div className="glass-panel">
-              <div className="panel-header">
-                <h2 className="panel-title">
-                  <ShoppingBag size={18} color="var(--color-violet)" />
-                  <span>Recent Transaction Ledger</span>
-                </h2>
-              </div>
-
-              {recentOrders.length === 0 ? (
-                <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                  No transactions recorded. Get started by placing an order!
-                </div>
-              ) : (
-                <div className="table-container">
-                  <table className="data-table">
-                    <thead>
-                      <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Products Ordered</th>
-                        <th>Total Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {recentOrders.map((order) => {
-                        const itemsSummary = order.items
-                          .map((item) => `${item.product.name} (x${item.quantity})`)
-                          .join(', ')
-                        return (
-                          <tr key={order.id}>
-                            <td>
-                              <span className="sku-text">#ORD-{order.id.toString().padStart(4, '0')}</span>
-                            </td>
-                            <td style={{ fontWeight: 500, color: 'var(--text-main)' }}>
-                              {order.customer.full_name}
-                            </td>
-                            <td style={{ fontSize: '0.85rem', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={itemsSummary}>
-                              {itemsSummary}
-                            </td>
-                            <td style={{ fontWeight: 600, color: 'var(--color-teal)' }}>
-                              {formatCurrency(order.total_amount)}
-                            </td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+          {/* Low Stock Alerts */}
+          <div className="glass-panel">
+            <div className="panel-header" style={{ marginBottom: '1rem' }}>
+              <h2 className="panel-title" style={{ color: 'var(--color-rose)' }}>
+                <AlertTriangle size={18} />
+                <span>Low stock products (<span style={{ fontSize: '0.8rem' }}>&lt; 5</span>)</span>
+              </h2>
+              {summary.low_stock_alerts && summary.low_stock_alerts.length > 0 && (
+                <span className="badge badge-danger">
+                  {summary.low_stock_alerts.length} Critical
+                </span>
               )}
             </div>
 
-            {/* Side Alerts: Low Stock Alerts */}
-            <div className="dashboard-side-panel">
-              <div className="glass-panel" style={{ height: '100%', marginBottom: 0 }}>
-                <div className="panel-header" style={{ marginBottom: '1rem' }}>
-                  <h2 className="panel-title" style={{ color: 'var(--color-rose)' }}>
-                    <AlertTriangle size={18} />
-                    <span>Low stock products (<span style={{ fontSize: '0.8rem' }}>&lt; 5</span>)</span>
-                  </h2>
-                  {summary.low_stock_alerts && summary.low_stock_alerts.length > 0 && (
-                    <span className="badge badge-danger">
-                      {summary.low_stock_alerts.length} Critical
-                    </span>
-                  )}
-                </div>
-
-                {(!summary.low_stock_alerts || summary.low_stock_alerts.length === 0) ? (
-                  <div style={{ padding: '2.5rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                    <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🛡️</div>
-                    <p style={{ fontSize: '0.85rem' }}>All product inventory lines are currently optimal.</p>
-                  </div>
-                ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    {summary.low_stock_alerts.map((item) => (
-                      <div key={item.id} className="low-stock-item">
-                        <div className="low-stock-info">
-                          <span className="low-stock-name">{item.name}</span>
-                          <span className="low-stock-sku">{item.sku}</span>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <span className="badge badge-warning">{item.stock_quantity} left</span>
-                          <div className="alert-circle"></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+            {(!summary.low_stock_alerts || summary.low_stock_alerts.length === 0) ? (
+              <div style={{ padding: '2.5rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🛡️</div>
+                <p style={{ fontSize: '0.85rem' }}>All product inventory lines are currently optimal.</p>
               </div>
-            </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {summary.low_stock_alerts.map((item) => (
+                  <div key={item.id} className="low-stock-item">
+                    <div className="low-stock-info">
+                      <span className="low-stock-name">{item.name}</span>
+                      <span className="low-stock-sku">{item.sku}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span className="badge badge-warning">{item.stock_quantity} left</span>
+                      <div className="alert-circle"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </>
       )}
