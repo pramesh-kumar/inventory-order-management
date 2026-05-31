@@ -20,7 +20,7 @@ export default function Dashboard({ fetchSummary, summary, loadingSummary }) {
     <div>
       <div className="top-bar">
         <div>
-          <h1 className="page-title">Ethara.AI Dashboard</h1>
+          <h1 className="page-title">Inventory Management System</h1>
           <p className="page-subtitle">Real-time enterprise inventory metrics and status alerts</p>
         </div>
       </div>

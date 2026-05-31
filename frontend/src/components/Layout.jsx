@@ -28,6 +28,7 @@ export default function Layout({ children }) {
       {/* Sidebar Navigation */}
       <aside className="sidebar">
         <div className="brand-section" style={{ cursor: 'pointer', padding: '0.5rem 0' }} onClick={() => navigate('/')}>
+          <img src="/logo.png" alt="Ethara.AI" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
           <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-main)', letterSpacing: '-0.5px' }}>Ethara.AI</span>
         </div>
 
